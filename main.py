@@ -17,8 +17,8 @@ class KalkulatorTurunanApp(ctk.CTk):
         super().__init__()
 
         # Pengaturan Window (diperlebar sedikit agar muat panel langkah)
-        self.title("Kalkulator Turunan + Langkah Penyelesaian")
-        self.geometry("760x580")
+        self.title("KalPing")
+        self.geometry("920x580")
         self.configure(fg_color=WARNA_BG)
         self.resizable(False, False)
 
@@ -29,13 +29,14 @@ class KalkulatorTurunanApp(ctk.CTk):
 
     def buat_ui(self):
         # Membagi window menjadi 2 kolom utama: Kiri (Kalkulator), Kanan (Langkah Penyelesaian)
-        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
         # ================= PANEL KIRI (KALKULATOR) =================
-        frame_kiri = ctk.CTkFrame(self, fg_color="transparent")
+        frame_kiri = ctk.CTkFrame(self, fg_color="transparent", width=300)
         frame_kiri.grid(row=0, column=0, padx=(20, 10), pady=20, sticky="nsew")
+        frame_kiri.pack_propagate(False)
 
         # Area Layar Input & Output
         frame_layar = ctk.CTkFrame(frame_kiri, fg_color=WARNA_LAYAR, corner_radius=15)
@@ -127,7 +128,7 @@ class KalkulatorTurunanApp(ctk.CTk):
 
         lbl_judul_langkah = ctk.CTkLabel(
             frame_kanan,
-            text="📝 Langkah-Langkah Penyelesaian",
+            text="Langkah-Langkah",
             font=("Roboto", 16, "bold"),
             text_color="#60A5FA",
             anchor="w"
@@ -186,7 +187,6 @@ class KalkulatorTurunanApp(ctk.CTk):
         """Membuat rincian langkah penyelesaian berdasarkan bentuk fungsi"""
         langkah = []
         langkah.append(f"Soal:\n  f(x) = {self.format_math(ekspresi)}\n")
-        langkah.append("-" * 36)
 
         # Memecah fungsi menjadi suku-suku penjumlahan/pengurangan
         suku_suku = sp.Add.make_args(ekspresi)
@@ -226,7 +226,6 @@ class KalkulatorTurunanApp(ctk.CTk):
         turunan_mentah = sp.diff(ekspresi, self.x)
         turunan_akhir = sp.simplify(turunan_mentah)
 
-        langkah.append("-" * 36)
         langkah.append("2. Gabungkan Semua Hasil Turunan:")
         langkah.append(f"   f'(x) = {self.format_math(turunan_mentah)}\n")
 
@@ -234,7 +233,6 @@ class KalkulatorTurunanApp(ctk.CTk):
             langkah.append("3. Sederhanakan Bentuk Aljabar:")
             langkah.append(f"   f'(x) = {self.format_math(turunan_akhir)}\n")
 
-        langkah.append("=" * 36)
         langkah.append(f"HASIL AKHIR:\n  f'(x) = {self.format_math(turunan_akhir)}")
 
         return "\n".join(langkah)
@@ -255,7 +253,7 @@ class KalkulatorTurunanApp(ctk.CTk):
             self.tulis_langkah(teks_langkah)
 
         except Exception:
-            self.lbl_hasil.configure(text="Error: Periksa penulisan!", text_color="#F87171")
+            self.lbl_hasil.configure(text="Error: KETIK YANG BENER!", text_color="#F87171")
             self.tulis_langkah("Terjadi kesalahan sintaks.\nPastikan tanda kurung sudah ditutup dengan benar, contoh: sin(2x) atau √(x+1).")
 
 if __name__ == "__main__":
