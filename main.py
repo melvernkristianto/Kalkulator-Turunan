@@ -206,18 +206,23 @@ class KalkulatorTurunanApp(ctk.CTk):
             langkah.append(f"   [Suku {idx}]: {suku_str}")
 
             # Cek jenis aturan kalkulus pada suku tersebut
-            if not suku.has(self.x):
+            if not suku.has(self.x): 
+                # f(x) = c, maka f'(x) = 0
                 langkah.append("   • Aturan Konstanta: Turunan dari konstanta adalah 0.")
             elif suku.is_Pow or (suku.is_Mul and any(arg.is_Pow or arg == self.x for arg in suku.args)):
+                # f(x) = a*x^n, maka f'(x) = a*n*x^(n-1)
                 langkah.append("   • Aturan Pangkat: d/dx (a·x^n) = a·n·x^(n-1)")
             elif suku.has(sp.sin, sp.cos, sp.tan):
+                # f(x) = sin(u), cos(u), tan(u), maka gunakan aturan rantai
                 langkah.append("   • Aturan Trigonometri & Rantai:")
                 langkah.append("     d/dx sin(u) = cos(u)·u'")
                 langkah.append("     d/dx cos(u) = -sin(u)·u'")
                 langkah.append("     d/dx tan(u) = sec^2(u)·u'")
             elif suku.is_Mul and len([a for a in suku.args if a.has(self.x)]) >= 2:
+                # f(x) = u*v, maka gunakan aturan perkalian
                 langkah.append("   • Aturan Perkalian: (u·v)' = u'v + uv'")
             else:
+                # Aturan umum untuk suku sederhana
                 langkah.append("   • Turunkan terhadap variabel x.")
 
             langkah.append(f"   → Hasil suku {idx} = {hasil_suku_str}\n")
