@@ -86,9 +86,10 @@ class KalkulatorTurunanApp(ctk.CTk):
         for col in range(5):
             frame_tombol.grid_columnconfigure(col, weight=1)
 
-        for r, baris in enumerate(tata_letak_tombol):
-            frame_tombol.grid_rowconfigure(r, weight=1)
-            for c, teks in enumerate(baris):
+        # untuk membaca setiap baris dan kolom list tata letak tombol
+        for x, baris in enumerate(tata_letak_tombol):
+            frame_tombol.grid_rowconfigure(x, weight=1)
+            for y, teks in enumerate(baris):
                 if teks in ["C", "DEL"]:
                     warna = WARNA_TOMBOL_AKSI
                 elif teks in ["sin(", "cos(", "tan(", "√(", "^", "(", ")", "/", "*", "+", "-"]:
@@ -106,7 +107,7 @@ class KalkulatorTurunanApp(ctk.CTk):
                     height=46,
                     command=lambda t=teks: self.klik_tombol(t)
                 )
-                btn.grid(row=r, column=c, padx=3, pady=3, sticky="nsew")
+                btn.grid(row=x, column=y, padx=3, pady=3, sticky="nsew")
 
         # Tombol Eksekusi Utama
         btn_hitung = ctk.CTkButton(
@@ -128,10 +129,10 @@ class KalkulatorTurunanApp(ctk.CTk):
 
         lbl_judul_langkah = ctk.CTkLabel(
             frame_kanan,
-            text="📝 Langkah-Langkah & Rumus Dasar Turunan",
+            text="Langkah-Langkah",
             font=("Roboto", 16, "bold"),
             text_color="#60A5FA",
-            anchor="w"
+            anchor="center"
         )
         lbl_judul_langkah.pack(padx=15, pady=(15, 10), fill="x")
 
